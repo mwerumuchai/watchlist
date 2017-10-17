@@ -13,3 +13,4 @@ app.config.from_pyfile("config.py")
 #initializing Flask extensions
 bootstrap = Bootstrap(app)
 from app import views
+from app import error
