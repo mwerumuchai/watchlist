@@ -21,7 +21,7 @@ class MovieTest(unittest.TestCase):
         self.assertEqual(self.new_movie.id, 1234)
         self.assertEqual(self.new_movie.title, "Python must be crazy")
         self.assertEqual(self.new_movie.overview, "A thrilling new python series")
-        self.assertEqual(self.new_movie.image, "https://image.tmdb.org/t/p/w500"+"/khsjha27hbs")
+        self.assertEqual(self.new_movie.poster, "https://image.tmdb.org/t/p/w500"+"/khsjha27hbs")
         self.assertEqual(self.new_movie.vote_average, 8.5)
         self.assertEqual(self.new_movie.vote_count, 129993)
 

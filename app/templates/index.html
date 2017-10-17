@@ -1,38 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+ {% extends 'base.html'%} {% import 'macros.html' as macro%}
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"> {% if title %}
-    <title>{{ title }}</title>
-    {% else %}
-    <title>Welcome to the Best Online Movie Review Website</title>
-    {% endif %}
-  </head>
-  {% import 'macros.html' as macro%}
+<!-- styles block -->
+{%block styles%} {{ super() }}
+<link rel="stylesheet" href="{{url_for('static', filename = " css/index.css ")}}"> {%endblock%}
 
-  <body>
-    <!-- Popular movie section -->
-    <h3>Popular Movies</h3>
-    <ul>
-      {{ macro.displayMovieList(popular)}}
-    </ul>
+<!-- Content block -->
+{%block content%}
+<!-- Popular movie section -->
+<h3>Popular Movies</h3>
+<ul>
+  {{ macro.displayMovieList(popular)}}
+</ul>
 
-    <!-- upcoming  movie section -->
-    <h3>Upcoming Movies</h3>
-    <ul>
-      {{ macro.displayMovieList(upcoming)}}
-    </ul>
+<!-- upcoming  movie section -->
+<h3>Upcoming Movies</h3>
+<ul>
+  {{ macro.displayMovieList(upcoming)}}
+</ul>
 
-    <!-- Now showing movie section -->
-    <h3>Now showing Movies</h3>
-    <ul>
+<!-- Now showing movie section -->
+<h3>Now showing Movies</h3>
+<ul>
 
-      {{ macro.displayMovieList(now_showing)}}
-    </ul>
-
-
-  </body>
-
-</html>
+  {{ macro.displayMovieList(now_showing)}}
+</ul>
+{%endblock%}
