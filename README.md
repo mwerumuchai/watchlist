@@ -18,11 +18,15 @@ This is a web application that allows a user to find a movie, add a review to th
 ## Technologies Used
 Python3.6
 
+## Known Bugs
+None
+
 ## Installation
 
 
 ### Running
-*
+*python3.6 run.py
+
 
 ## License
  MIT &copy;2017 **Mweru Muchai** and **Peter Maina**
