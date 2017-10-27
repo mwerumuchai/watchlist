@@ -2,6 +2,7 @@ from .import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -21,25 +22,32 @@ class Movie:
         self.vote_count = vote_count
 
 # Reviews
-class Review():
+class Review(db.Model):
 
     """
     List of reviews
     """
     all_reviews = [] #Creating an empty array
 
-    def __init__(self, movie_id, title, imageurl,review):
-        self.movie_id = movie_id
-        self.title = title
-        self.imageurl = imageurl
-        self.review = review
+    __tablename__ = 'reviews'
+
+    id = db.Column(db.Integer,primary_key = True)
+    movie_id = db.Column(db.Integer)
+    movie_title = db.Column(db.String)
+    image_path = db.Column(db.String)
+    movie_review = db.Column(db.String)
+    posted = db.Column(db.DateTime,default=datetime.utcnow)
+    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+
 
 
     def save_review(self):
         '''
         Save the reviews
         '''
-        Review.all_reviews.append(self)
+        db.session.add(self)
+        db.session.commit()
+        # Review.all_reviews.append(self)
 
     @classmethod
     def clear_reviews(cls):
@@ -48,17 +56,20 @@ class Review():
     # display reviews
     @classmethod
     def get_reviews(cls,id):
-        response = []
-
-        for review in cls.all_reviews:
-            if review.movie_id == id:
-                response.append(review)
-
-        return response
+        reviews = Review.query.filter_by(movie_id=id).all()
+        return reviews
+        # response = []
+        #
+        # for review in cls.all_reviews:
+        #     if review.movie_id == id:
+        #         response.append(review)
+        #
+        # return response
 
 #database
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
+
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index=True)
     email=db.Column(db.String(255),unique=True,index=True)
@@ -66,7 +77,7 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     password_hash=db.Column(db.String(255))
-    
+    reviews = db.relationship('Review',backref = 'user',lazy = "dynamic")
 
     pass_secure = db.Column(db.String(255))
 

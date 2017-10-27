@@ -24,6 +24,7 @@ def create_app(config_name):
     mail.init_app(app)
 
     #creating the app configurations
+    app.config.from_object(__name__)
     app.config.from_object(config_options[config_name])
 
     #initializing Flask extensions
