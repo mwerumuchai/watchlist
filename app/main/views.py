@@ -1,14 +1,10 @@
-from flask import render_template,request,redirect,url_for
-# from app import app
+from flask import render_template,request,redirect,url_for,abort
 from . import main
 from ..request import get_movies,get_movie,search_movie
-from ..models import Review
-from .forms import ReviewForm
+from ..models import Review,User
+from .forms import ReviewForm,UpdateProfile
 from flask_login import login_required
-
-
-# Review = reviews.Review
-
+from .. import db,photos
 
 # views
 # @app.route('/')
@@ -80,3 +76,47 @@ def new_review(id):
 
     title = f"{movie.title} review"
     return render_template('new_review.html', title = title, review_form = form, movie = movie)
+
+#Creating new profile
+@main.route('/user/<uname>')
+def profile(uname):
+    user = User.query.filter_by(username = uname).first()
+
+    if user is None:
+        abort(404)
+
+    return render_template("profile/profile.html", user = user)
+
+#update profile
+@main.route('/user/<uname>/update',methods = ["GET","POST"])
+@login_required
+def update_profile(uname):
+    user = User.query.filter_by(username = uname).first()
+
+    if user is None:
+        abort(404)
+
+    form = UpdateProfile()
+
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile', uname = user.username))
+
+    return render_template('profile/update.html', form =form)
+
+#picture
+@main.route('/user/<uname>/update/pic',methods = ["GET","POST"])
+@login_required
+def update_pic(uname):
+    user = User.query.filter_by(username = uname).first()
+
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        user.profile_pic_path = path
+        db.session.commit()
+
+    return redirect(url_for('main.profile', uname = uname))

@@ -21,7 +21,7 @@ class Movie:
         self.vote_count = vote_count
 
 # Reviews
-class Review:
+class Review():
 
     """
     List of reviews
@@ -40,7 +40,6 @@ class Review:
         Save the reviews
         '''
         Review.all_reviews.append(self)
-
 
     @classmethod
     def clear_reviews(cls):
@@ -64,7 +63,10 @@ class User(UserMixin,db.Model):
     username = db.Column(db.String(255),index=True)
     email=db.Column(db.String(255),unique=True,index=True)
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
+    bio = db.Column(db.String(255))
+    profile_pic_path = db.Column(db.String())
     password_hash=db.Column(db.String(255))
+    
 
     pass_secure = db.Column(db.String(255))
 
