@@ -2,6 +2,10 @@
 <!-- navbar block -->
 {%block navbar%} {% include 'navbar.html'%} {%endblock%}
 
+<!-- simple review Editor -->
+{% block styles %} {{super()}}
+<!--Importing the simple mde css and js files  -->
+{{ simplemde.css}} {{ simplemde.js }} {% endblock %}
 
 <!-- content block -->
-{%block content%} {%endblock%}
+{% block content%} {% endblock %}
